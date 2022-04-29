@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./bbs.db"
+}
+
+model Thread {
+  id        Int        @id
+  postedAt  DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  title     String
+  Response  Response[]
+}
+
+model Response {
+  id       Int      @id @default(autoincrement())
+  postedAt DateTime @default(now())
+  name     String
+  mail     String
+  number   Int      @unique
+  content  String
+  hashId   String
+
+  thread   Thread @relation(fields: [threadId], references: [id])
+  threadId Int
+}

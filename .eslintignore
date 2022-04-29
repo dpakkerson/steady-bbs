@@ -1,0 +1,8 @@
+node_modules/
+dist/
+prisma/
+coverage/
+
+.eslintrc.js
+jest.config.js
+package-lock.json

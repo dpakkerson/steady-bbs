@@ -1,2 +1,3 @@
-# steady-bbs
-2ch/5ch compatible BBS
+# Steady BBS
+
+2ch ブラウザ互換掲示板サーバー
