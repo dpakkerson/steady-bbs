@@ -12,10 +12,6 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
-  res.json({ message: "web app route." });
-});
-
 app.post("/test/bbs.cgi", (req, res, next) => {
   const { FROM: name, mail, MESSAGE: content } = req.body;
   const hashId = calculateHashId(req);
