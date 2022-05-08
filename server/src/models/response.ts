@@ -12,7 +12,7 @@ type PostResponseRequest = {
 
 export function postResponse(newPost: PostResponseRequest) {
   return listThreadResponses(newPost.threadId).then((responses) => {
-    const newNumber = responses.length;
+    const newNumber = responses.length + 1;
     return prisma.response.create({
       data: {
         ...newPost,
