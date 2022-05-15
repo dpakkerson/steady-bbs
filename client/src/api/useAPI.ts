@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { getApiUrl } from './client';
 import { APIResponse, APIThread } from './model';
 
@@ -15,6 +15,11 @@ export function useAPI<T>(path: string) {
 
 export function useThreads() {
     const {data, error, loading} = useAPI<APIThread[]>(getApiUrl('/api/threads'));
+    if (data) {
+        data.forEach(thread => {
+            mutate(getApiUrl(`/api/threads/${thread.id}`), thread, false);
+        })
+    }
     return {
         threads: data,
         error,

@@ -4,7 +4,8 @@ import './TopPage.css';
 import { NewResponseForm } from '../components/NewResponseForm';
 import ThreadList from '../components/ThreadList';
 import { useThreads } from '../api/useAPI';
-import Thread from '../components/Thread';
+import ThreadResponses from '../components/ThreadResponses';
+import ThreadTitle from '../components/ThreadTitle';
 
 function TopPage() {
   const {threads} = useThreads();
@@ -22,7 +23,11 @@ function TopPage() {
       </div>
       {threads?.map(thread => {
         return <div className='toppage-thread' key={thread.id}>
-          <Thread threadId={thread.id} />
+          <div className='m-3'>
+            <ThreadTitle title={thread.title} />
+          </div>
+          <ThreadResponses threadId={thread.id} />
+          <NewResponseForm threadId={thread.id} />
         </div>
       })}
       <div className="toppage-component">
