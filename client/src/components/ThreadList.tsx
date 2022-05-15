@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useThreads } from "../api/useAPI";
 
 type Props = {
@@ -9,7 +10,7 @@ export default function ThreadList(props: Props) {
   const {threads} = useThreads();
   return <div>
     {threads?.map(thread => {
-      return <span className='ms-3' key={thread.id}>{thread.title}</span>
+      return <Link to={`/threads/${thread.id}`} className='ms-3' key={thread.id}>{thread.title}</Link>
     })}
   </div>
 }

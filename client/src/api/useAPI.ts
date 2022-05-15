@@ -22,6 +22,15 @@ export function useThreads() {
     };
 }
 
+export function useThread(threadId: number) {
+    const {data, error, loading} = useAPI<APIThread>(getApiUrl(`/api/threads/${threadId}`));
+    return {
+        thread: data,
+        error,
+        loading,
+    };
+}
+
 export function useThreadResponses(threadId: number) {
     const {data ,error, loading} = useAPI<APIResponse[]>(getApiUrl(`/api/threads/${threadId}/responses`))
     return {
