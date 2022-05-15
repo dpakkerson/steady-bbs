@@ -1,4 +1,14 @@
-response-header {
+.response-header {
     flex: 1;
     flex-direction: column;
+}
+
+.response-name-nomail {
+    color: green;
+    font-weight: bold;
+}
+
+.response-name-hasmail {
+    color: blue;
+    font-weight: bold;
 }

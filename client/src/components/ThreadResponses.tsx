@@ -9,14 +9,15 @@ type Props = {
 export default function ThreadResponses(props: Props) {
   const { responses} = useThreadResponses(props.threadId);
   return (
-    <div>
+    <div className="m-3">
       {responses?.map(response => {
         return (
           <Response
+            key={response.number}
             number={response.number}
             name={response.name}
             mail={response.mail}
-            timestamp={response.postedAt}
+            timestamp={new Date(response.postedAt)}
             hashId={response.hashId}
             content={response.content}
           />

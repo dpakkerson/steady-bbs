@@ -10,21 +10,28 @@ function App() {
   const {threads} = useThreads();
   
   return (
-    <div className="App">
+    <div className="toppage">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Base URL: {appConfig.publicUrl}
+          Welcome to {appConfig.bbsName}
         </p>
       </header>
-      <NewResponseForm />
-      <ThreadList />
+      <div className='toppage-component p-3'>
+        <ThreadList />
+      </div>
       {threads?.map(thread => {
-        return <div>
+        return <div className='toppage-thread' key={thread.id}>
+          <div className='ms-3 mt-3'>
+            <span className='toppage-thread-title'>{thread.title}</span>
+          </div>
           <ThreadResponses threadId={thread.id} />
           <NewResponseForm threadId={thread.id} />
         </div>
       })}
+      <div className="toppage-component">
+        <NewResponseForm />
+      </div>
     </div>
   );
 }

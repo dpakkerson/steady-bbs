@@ -1,4 +1,5 @@
 import { mutate } from "swr";
+import { APIResponse, APIThread } from "./model";
 
 export function getApiUrl(apiPath: string): string {
   if (appConfig.publicUrl.endsWith("/")) {
@@ -18,8 +19,8 @@ type PostThreadsPayload = {
 };
 
 type PostThreadsResponse = {
-  thread: any;
-  response: any;
+  thread: APIThread;
+  response: APIResponse;
 };
 
 export function postThreads(
@@ -44,7 +45,7 @@ type PostResponsePayload = {
   content: string;
 };
 
-export function postResponse(payload: PostResponsePayload): Promise<Response> {
+export function postResponse(payload: PostResponsePayload): Promise<APIResponse> {
   return fetch(getApiUrl("/api/responses"), {
     method: "POST",
     headers: {

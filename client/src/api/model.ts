@@ -26,3 +26,21 @@ export type Response = {
   hashId: string;
   threadId: number;
 };
+
+export type APIThread = {
+  id: number;
+  postedAt: string;
+  updatedAt: string;
+  title: string;
+};
+
+export type APIResponse = {
+  id: number;
+  postedAt: string;
+  name: string;
+  mail: string;
+  number: number;
+  content: string;
+  hashId: string;
+  threadId: number;
+};

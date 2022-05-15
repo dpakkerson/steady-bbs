@@ -1,10 +1,7 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 20vmin;
   pointer-events: none;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -16,6 +13,7 @@
 .App-header {
   background-color: #282c34;
   min-height: 40vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +33,35 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.toppage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #FEDCBD;
+}
+
+.toppage-component {
+  background-color: #CCFFCC;
+  width: 95%;
+  border: solid 1px black;
+  margin: 10px;
+}
+
+.toppage-thread {
+  background-color: #EFEFEF;
+  width: 95%;
+  border: solid 1px black;
+  margin: 10px;
+}
+
+.toppage-thread-inner {
+  border: solid 1px black;
+}
+
+.toppage-thread-title {
+  color: red;
+  font-weight: bold;
+  font-size: x-large;
 }

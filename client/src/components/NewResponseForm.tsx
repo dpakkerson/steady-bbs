@@ -42,14 +42,14 @@ export function NewResponseForm(props: Props) {
   }
 
   return (
-    <Form>
+    <Form className="m-3">
       {isCreatingThread && (
         <Form.Control
           className="mb-3"
           type="text"
           value={title}
           placeholder="スレッドタイトル"
-          onChange={(event) => setTitle(event.target.value)}
+          onChange={(event: any) => setTitle(event.target.value)}
         />
       )}
       <Row className="mb-3">
@@ -58,7 +58,7 @@ export function NewResponseForm(props: Props) {
             type="text"
             value={name}
             placeholder="名前"
-            onChange={(event) => setName(event.target.value)}
+            onChange={(event: any) => setName(event.target.value)}
           />
         </Col>
         <Col>
@@ -66,7 +66,7 @@ export function NewResponseForm(props: Props) {
             type="text"
             value={mail}
             placeholder="メール"
-            onChange={(event) => setMail(event.target.value)}
+            onChange={(event: any) => setMail(event.target.value)}
           />
         </Col>
       </Row>

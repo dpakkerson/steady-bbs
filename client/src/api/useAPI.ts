@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { getApiUrl } from './client';
-import { Response, Thread } from './model';
+import { APIResponse, APIThread } from './model';
 
 export function useAPI<T>(path: string) {
     // @ts-ignore
@@ -14,7 +14,7 @@ export function useAPI<T>(path: string) {
 }
 
 export function useThreads() {
-    const {data, error, loading} = useAPI<Thread[]>(getApiUrl('/api/threads'));
+    const {data, error, loading} = useAPI<APIThread[]>(getApiUrl('/api/threads'));
     return {
         threads: data,
         error,
@@ -23,7 +23,7 @@ export function useThreads() {
 }
 
 export function useThreadResponses(threadId: number) {
-    const {data ,error, loading} = useAPI<Response[]>(getApiUrl(`/api/threads/${threadId}/responses`))
+    const {data ,error, loading} = useAPI<APIResponse[]>(getApiUrl(`/api/threads/${threadId}/responses`))
     return {
         responses: data,
         error,

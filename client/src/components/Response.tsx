@@ -13,9 +13,15 @@ type Props = {
 export default function Response(props: Props) {
   return <div>
     <div className="response-header">
-        {`${props.number}: ${props.name} ${props.timestamp} ID: ${props.hashId}`}
+      <span>{props.number + ' 名前: '}</span>
+      {props.mail.length > 0 ? 
+        <a href={`mailto:${props.mail}`} className="response-name-hasmail">{props.name}</a>
+        :
+        <span className="response-name-nomail">{props.name}</span>        
+      }
+      <span>{` : ${props.timestamp} ID: ${props.hashId}`}</span>
     </div>
-    <p>
+    <p className="ms-3">
         {props.content}
     </p>
   </div>
