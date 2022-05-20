@@ -21,8 +21,13 @@ export default function Response(props: Props) {
       }
       <span>{` : ${props.timestamp} ID: ${props.hashId}`}</span>
     </div>
-    <p className="ms-3">
-        {props.content}
+    <p className="ms-3 response-body">
+        {props.content.split('\n').map(line => {
+          return <>
+            {line}
+            <br />
+          </>
+        })}
     </p>
   </div>
 }

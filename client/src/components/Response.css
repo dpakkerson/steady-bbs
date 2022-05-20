@@ -12,3 +12,10 @@
     color: blue;
     font-weight: bold;
 }
+
+.response-body {
+    font-size: 16px;
+    line-height:18px;
+    font-family: "MS P ゴシック",'MS PGothic',RobotoJAA,Monapo;
+    letter-spacing: 0;
+}
