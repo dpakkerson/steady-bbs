@@ -14,8 +14,7 @@ export function createThread(title: string) {
 }
 
 export function listThreads() {
-  // todo: filter responses
-  return prisma.thread.findMany();
+  return prisma.thread.findMany({orderBy: {updatedAt: 'desc'}});
 }
 
 export function getThread(id: number) {

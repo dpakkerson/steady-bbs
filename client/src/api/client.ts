@@ -54,6 +54,7 @@ export function postResponse(payload: PostResponsePayload): Promise<APIResponse>
     body: JSON.stringify(payload),
   }).then((response) => {
     mutate(getApiUrl(`/api/threads/${payload.threadId}/responses`));
+    mutate(getApiUrl("/api/threads"));
     return response.json();
   });
 }
