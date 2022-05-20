@@ -15,6 +15,7 @@ root.render(
       <Routes>
         <Route path="/" element={<TopPage />} />
         <Route path="/threads/:threadId" element={<ThreadPage />} />
+        <Route path="/threads/:threadId/:responseQuery" element={<ThreadPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

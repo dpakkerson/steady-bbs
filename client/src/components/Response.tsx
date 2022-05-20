@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import './Response.css';
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
     timestamp: Date;
     content: String;
     hashId: String;
+    threadId: number;
 };
 
 export default function Response(props: Props) {
@@ -24,7 +26,13 @@ export default function Response(props: Props) {
     <p className="ms-3 response-body">
         {props.content.split('\n').map(line => {
           return <>
-            {line}
+            {line.split(/(>>\d+)/g).map(token => {
+              if (token.match(/^>>\d+$/)) {
+                return <Link to={`/threads/${props.threadId}/${parseInt(token.substring(2), 10)}`}>{token}</Link>;
+              } else {
+                return token;
+              }
+            })}
             <br />
           </>
         })}
