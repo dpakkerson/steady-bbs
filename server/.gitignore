@@ -3,5 +3,4 @@ dist/
 coverage/
 
 *.env*
-prisma/bbs.db
-prisam/bbs.db-journal
+prisma/bbs.db*
