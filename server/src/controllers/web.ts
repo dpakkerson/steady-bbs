@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import { listThreadResponses, postResponse } from "../models/response";
 import { createThread, getThread, listThreads } from "../models/thread";
 import { calculateHashId } from "./hash";
+import Encoding from 'encoding-japanese';
 import iconv from "iconv-lite";
 
 export const app = express();
@@ -13,14 +14,27 @@ app.use(
   })
 );
 
+function parseUrlEncodedShiftJIS(encoded: string): string {
+  const urlDecoded = Encoding.urlDecode(encoded);
+  const codepoints = Encoding.convert(urlDecoded, {
+    from: 'SJIS',
+    to: 'UNICODE',
+  });
+  return Encoding.codeToString(codepoints);
+}
+
 app.post("/test/bbs.cgi", (req, res, next) => {
-  const { FROM: name, mail, MESSAGE: content } = req.body;
+  const { FROM: nameEncoded, mail: mailEncoded, MESSAGE: contentEncoded } = req.body;
+  const name = parseUrlEncodedShiftJIS(nameEncoded);
+  const mail = parseUrlEncodedShiftJIS(mailEncoded);
+  const content = parseUrlEncodedShiftJIS(contentEncoded);
   const hashId = calculateHashId(req);
+
+  let result;
   if ("subject" in req.body) {
     const title = req.body.subject;
-
     // thread
-    createThread(title)
+    result = createThread(title)
       .then((thread) => {
         const threadId = thread.id;
         return postResponse({
@@ -31,25 +45,39 @@ app.post("/test/bbs.cgi", (req, res, next) => {
           hashId,
         });
       })
-      .then(() => {
-        res.send("success!");
-      })
-      .catch(next);
   } else if ("key" in req.body) {
-    const threadId = req.body.key;
+    const threadId = parseInt(req.body.key, 10);
     // response
-    postResponse({
+    result = postResponse({
       threadId,
       name,
       mail,
       content,
       hashId,
     })
-      .then(() => {
-        res.send("success!");
-      })
-      .catch(next);
+  } else {
+    result = Promise.reject('failed to parse request');
   }
+  return result
+    .then(() => {
+      res.status(200);
+      // I don't know why but Jane Style only works with the following code.
+      res.set('Content-Type', 'text/html; charset=EUC-JP');
+      const body = `
+      <!DOCTYPE html>
+      <html lang="ja">
+        <head>
+          <meta charset="EUC-JP">
+        </head>
+        <body>
+          書きこみが終りました。
+        </body>
+      </html>`;
+      const buffer = iconv.encode(body, 'EUC-JP');
+      res.set("Content-Type", "text/html; charset=EUC-JP");
+      res.send(buffer);
+    })
+    .catch(next);
 });
 
 app.get("/subject.txt", (req, res, next) => {
