@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import { listThreadResponses, postResponse } from "../models/response";
 import { createThread, getThread, listThreads } from "../models/thread";
 import { calculateHashId } from "./hash";
+import iconv from "iconv-lite";
 
 export const app = express();
 app.use(
@@ -57,12 +58,12 @@ app.get("/subject.txt", (req, res, next) => {
       const body = threads
         .map((thread) => {
           const { id, title } = thread;
-          // todo: add response count
-          return `${id}.dat<>${title}`;
+          return `${id}.dat<>${title} (${thread._count.Response})`;
         })
-        .join("\r\n");
-      res.set("Content-Type", "text/plain");
-      res.send(body);
+        .join("\r\n") + "\r\n";
+        const buffer = iconv.encode(body, 'shift_jis');
+        res.set("Content-Type", "text/plain; charset=shift_jis");
+        res.send(buffer);
     })
     .catch(next);
 });
@@ -82,13 +83,14 @@ app.get("/dat/:id.dat", (req, res, next) => {
         .map((response) => {
           const { name, mail, postedAt, hashId, content, number } = response;
           // todo: serialize postedAt
-          return `${name}<>${mail}<>${postedAt} ${hashId}<>${content}<>${
+          return `${name}<>${mail}<>${postedAt} ${hashId}<>${content.replaceAll('\r\n', ' <br> ').replaceAll('\n', ' <br> ')}<>${
             number === 1 ? thread.title : ""
           }`;
         })
-        .join("\r\n");
-      res.set("Content-Type", "text/plain");
-      res.send(body);
+        .join("\r\n") + "\r\n";
+      const buffer = iconv.encode(body, 'shift_jis');
+      res.set("Content-Type", "text/plain; charset=shift_jis");
+      res.send(buffer);
     })
     .catch(next);
 });

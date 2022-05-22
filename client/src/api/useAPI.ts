@@ -14,7 +14,7 @@ export function useAPI<T>(path: string) {
 }
 
 export function useThreads() {
-    const {data, error, loading} = useAPI<APIThread[]>(getApiUrl('/api/threads'));
+    const {data, error, loading} = useAPI<(APIThread & {_count: {Response: number}})[]>(getApiUrl('/api/threads'));
     if (data) {
         data.forEach(thread => {
             mutate(getApiUrl(`/api/threads/${thread.id}`), thread, false);

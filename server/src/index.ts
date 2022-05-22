@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 app.use("/", webapp);
+app.use("/datclient", webapp);
 app.use("/api", restapp);
 
 if (process.env.NODE_ENV === 'production') {

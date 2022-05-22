@@ -10,7 +10,7 @@ export default function ThreadList(props: Props) {
   const {threads} = useThreads();
   return <div>
     {threads?.map(thread => {
-      return <Link to={`/threads/${thread.id}`} className='ms-3' key={thread.id}>{thread.title}</Link>
+      return <Link to={`/threads/${thread.id}`} className='ms-3' key={thread.id}>{`${thread.title} (${thread._count.Response})`}</Link>
     })}
   </div>
 }
