@@ -7,6 +7,17 @@ import Encoding from 'encoding-japanese';
 import iconv from "iconv-lite";
 
 export const app = express();
+app.use((req, res, next) => {
+  // ChMate specifies its encoding in Content-Type, which is good,
+  // but body-parser's decoder does not recognize it.
+  const path = req.url;
+  const contentType = req.headers["content-type"];
+  if (contentType !== undefined) {
+    // remove charset designation not to have body-parser decode it.
+    req.headers["content-type"] = contentType.replace('; charset=Shift_JIS', '');
+  }
+  next();
+});
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -23,12 +34,33 @@ function parseUrlEncodedShiftJIS(encoded: string): string {
   return Encoding.codeToString(codepoints);
 }
 
+
+app.get("/", (req, res) => {
+  // chmate reads board title from here
+  // todo: make board title configurable
+  const body = "<html><head><title>Steady BBS</title></head></html>";
+  const buffer = iconv.encode(body, 'shift_jis');
+  res.set("Content-Type", "text/html; charset=shift_jis");
+  res.send(buffer);
+})
+
+app.get("/SETTING.TXT", (req, res) => {
+  // todo: support SETTING.TXT
+  res.send("");
+})
+
+app.get("/head.txt", (req, res) => {
+  // todo: support local rules
+  res.send("");
+})
+
 app.post("/test/bbs.cgi", (req, res, next) => {
   const { FROM: nameEncoded, mail: mailEncoded, MESSAGE: contentEncoded } = req.body;
   const name = parseUrlEncodedShiftJIS(nameEncoded);
   const mail = parseUrlEncodedShiftJIS(mailEncoded);
   const content = parseUrlEncodedShiftJIS(contentEncoded);
   const hashId = calculateHashId(req);
+  const isChMate = (req.headers["user-agent"]?.indexOf("2chMate") ?? -1) >= 0;
 
   let result;
   if ("subject" in req.body) {
@@ -61,20 +93,22 @@ app.post("/test/bbs.cgi", (req, res, next) => {
   return result
     .then(() => {
       res.status(200);
+      // ChMate expects Shift_JIS response here.
+      const encoding = isChMate ? 'Shift_JIS' : 'EUC_JP';
       // I don't know why but Jane Style only works with the following code.
-      res.set('Content-Type', 'text/html; charset=EUC-JP');
+      res.set('Content-Type', `text/html; charset=${encoding}`);
       const body = `
       <!DOCTYPE html>
       <html lang="ja">
         <head>
-          <meta charset="EUC-JP">
+          <title>書きこみました。</title>
+          <meta charset="${encoding}">
         </head>
         <body>
           書きこみが終りました。
         </body>
       </html>`;
-      const buffer = iconv.encode(body, 'EUC-JP');
-      res.set("Content-Type", "text/html; charset=EUC-JP");
+      const buffer = iconv.encode(body, encoding);
       res.send(buffer);
     })
     .catch(next);
