@@ -10,7 +10,6 @@ export const app = express();
 app.use((req, res, next) => {
   // ChMate specifies its encoding in Content-Type, which is good,
   // but body-parser's decoder does not recognize it.
-  const path = req.url;
   const contentType = req.headers["content-type"];
   if (contentType !== undefined) {
     // remove charset designation not to have body-parser decode it.
@@ -60,7 +59,7 @@ app.post("/test/bbs.cgi", (req, res, next) => {
   const mail = parseUrlEncodedShiftJIS(mailEncoded);
   const content = parseUrlEncodedShiftJIS(contentEncoded);
   const hashId = calculateHashId(req);
-  const isChMate = (req.headers["user-agent"]?.indexOf("2chMate") ?? -1) >= 0;
+  const isChMate = (req.headers["x-2ch-ua"]?.indexOf("2chMate") ?? -1) >= 0;
 
   let result;
   if ("subject" in req.body) {
