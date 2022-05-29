@@ -1,4 +1,4 @@
-import { mutate } from "swr";
+import { useSWRConfig } from "swr";
 import { APIResponse, APIThread } from "./model";
 
 export function getApiUrl(apiPath: string): string {
@@ -23,19 +23,23 @@ type PostThreadsResponse = {
   response: APIResponse;
 };
 
-export function postThreads(
-  payload: PostThreadsPayload
-): Promise<PostThreadsResponse> {
-  return fetch(getApiUrl("/api/threads"), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  }).then((response) => {
-    mutate(getApiUrl("/api/threads"));
-    return response.json();
-  });
+export function usePostThreads() {
+  const {mutate} = useSWRConfig();
+  function postThreads(
+    payload: PostThreadsPayload
+  ): Promise<PostThreadsResponse> {
+    return fetch(getApiUrl("/api/threads"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }).then((response) => {
+      mutate(getApiUrl("/api/threads"));
+      return response.json();
+    });
+  }
+  return {postThreads};  
 }
 
 type PostResponsePayload = {
@@ -45,16 +49,20 @@ type PostResponsePayload = {
   content: string;
 };
 
-export function postResponse(payload: PostResponsePayload): Promise<APIResponse> {
-  return fetch(getApiUrl("/api/responses"), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  }).then((response) => {
-    mutate(getApiUrl(`/api/threads/${payload.threadId}/responses`));
-    mutate(getApiUrl("/api/threads"));
-    return response.json();
-  });
+export function usePostResponse() {
+  const {mutate} = useSWRConfig();
+  function postResponse(payload: PostResponsePayload): Promise<APIResponse> {
+    return fetch(getApiUrl("/api/responses"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }).then((response) => { 
+      mutate(getApiUrl(`/api/threads/${payload.threadId}/responses`));
+      mutate(getApiUrl("/api/threads"));  
+      return response.json();
+    });
+  }
+  return {postResponse};
 }

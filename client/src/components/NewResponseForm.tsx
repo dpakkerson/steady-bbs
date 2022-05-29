@@ -3,7 +3,7 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
-import { postResponse, postThreads } from "../api/client";
+import { usePostResponse, usePostThreads } from "../api/client";
 
 type Props = {
   threadId?: number;
@@ -15,6 +15,8 @@ export function NewResponseForm(props: Props) {
   const [name, setName] = useState<string>("");
   const [mail, setMail] = useState<string>("");
   const [content, setContent] = useState<string>("");
+  const {postThreads} = usePostThreads();
+  const {postResponse} = usePostResponse();
 
   function onClickPostButton() {
     let postResult;

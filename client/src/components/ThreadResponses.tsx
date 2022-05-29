@@ -1,5 +1,6 @@
 import React from "react";
 import { useThreadResponses } from "../api/useAPI";
+import { LoadingIndicator } from "./LoadingIndicator";
 import Response from "./Response";
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
 };
 
 export default function ThreadResponses(props: Props) {
-  const {responses} = useThreadResponses(props.threadId);
+  const {responses, loading} = useThreadResponses(props.threadId);
   const responseFilter = parseResponseQuery(props.responseQuery, responses?.length ?? 0);
   return (
     <div className="m-3">
@@ -26,6 +27,7 @@ export default function ThreadResponses(props: Props) {
           />
         );
       })}
+      {loading ? <LoadingIndicator /> : null}
     </div>
   );
 }
