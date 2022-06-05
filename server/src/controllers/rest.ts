@@ -1,4 +1,5 @@
 import express from "express";
+import { getLocalRule } from "../models/config";
 import { listThreadResponses, postResponse } from "../models/response";
 import { createThread, getThread, listThreads } from "../models/thread";
 import { calculateHashId } from "./hash";
@@ -84,3 +85,7 @@ app.post("/responses", (req, res, next) => {
     })
     .catch(next);
 });
+
+app.get("/config/localrule", (req, res) => {
+  return res.json({ body: getLocalRule() });
+})

@@ -3,12 +3,13 @@ import logo from '../logo.svg';
 import './TopPage.css';
 import { NewResponseForm } from '../components/NewResponseForm';
 import ThreadList from '../components/ThreadList';
-import { useThreads } from '../api/useAPI';
+import { useLocalRule, useThreads } from '../api/useAPI';
 import ThreadResponses from '../components/ThreadResponses';
 import ThreadTitle from '../components/ThreadTitle';
 
 function TopPage() {
   const {threads} = useThreads();
+  const {localRule} = useLocalRule();
   
   return (
     <div className="toppage">
@@ -18,6 +19,7 @@ function TopPage() {
           Welcome to {appConfig.bbsName}
         </p>
       </header>
+      <div className='toppage-component p-3' dangerouslySetInnerHTML={{__html: localRule ?? ''}} />
       <div className='toppage-component p-3'>
         <ThreadList />
       </div>

@@ -5,6 +5,7 @@ import { createThread, getThread, listThreads } from "../models/thread";
 import { calculateHashId } from "./hash";
 import Encoding from 'encoding-japanese';
 import iconv from "iconv-lite";
+import { getLocalRule } from "../models/config";
 
 export const app = express();
 app.use((req, res, next) => {
@@ -49,8 +50,9 @@ app.get("/SETTING.TXT", (req, res) => {
 })
 
 app.get("/head.txt", (req, res) => {
-  // todo: support local rules
-  res.send("");
+  const buffer = iconv.encode(getLocalRule(), 'shift_jis');
+  res.set("Content-Type", "text/plain; charset=shift_jis");
+  res.send(buffer);
 })
 
 app.post("/test/bbs.cgi", (req, res, next) => {

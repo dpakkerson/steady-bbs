@@ -45,3 +45,12 @@ export function useThreadResponses(threadId: number) {
         loading,
     };
 }
+
+export function useLocalRule() {
+    const {data ,error, loading} = useAPI<{body: string}>(getApiUrl(`/api/config/localrule`))
+    return {
+        localRule: data?.body,
+        error,
+        loading,
+    };
+}
