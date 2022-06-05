@@ -145,8 +145,7 @@ app.get("/dat/:id.dat", (req, res, next) => {
       const body = responses
         .map((response) => {
           const { name, mail, postedAt, hashId, content, number } = response;
-          // todo: serialize postedAt
-          return `${name}<>${mail}<>${postedAt} ${hashId}<>${content.replaceAll('\r\n', ' <br> ').replaceAll('\n', ' <br> ')}<>${
+          return `${name}<>${mail}<>${postedAt.toLocaleString('ja-JP')} ${hashId}<>${content.replaceAll('\r\n', ' <br> ').replaceAll('\n', ' <br> ')}<>${
             number === 1 ? thread.title : ""
           }`;
         })
