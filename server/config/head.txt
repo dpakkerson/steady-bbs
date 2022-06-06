@@ -1,2 +1,2 @@
-Steady BBS からのお知らせ <br />
+{{boardName}}からのお知らせ <br />
 特にありません

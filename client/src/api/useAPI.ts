@@ -1,6 +1,6 @@
 import useSWR, { useSWRConfig } from 'swr';
 import { getApiUrl } from './client';
-import { APIResponse, APIThread } from './model';
+import { APIConfig, APIResponse, APIThread } from './model';
 
 export function useAPI<T>(path: string) {
     // @ts-ignore
@@ -46,10 +46,10 @@ export function useThreadResponses(threadId: number) {
     };
 }
 
-export function useLocalRule() {
-    const {data ,error, loading} = useAPI<{body: string}>(getApiUrl(`/api/config/localrule`))
+export function useBBSConfig() {
+    const {data ,error, loading} = useAPI<APIConfig>(getApiUrl(`/api/config`))
     return {
-        localRule: data?.body,
+        config: data,
         error,
         loading,
     };

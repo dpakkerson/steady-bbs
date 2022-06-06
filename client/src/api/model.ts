@@ -44,3 +44,8 @@ export type APIResponse = {
   hashId: string;
   threadId: number;
 };
+
+export type APIConfig = {
+  localRule: string;
+  boardName: string;
+}

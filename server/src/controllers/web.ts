@@ -5,7 +5,7 @@ import { createThread, getThread, listThreads } from "../models/thread";
 import { calculateHashId } from "./hash";
 import Encoding from 'encoding-japanese';
 import iconv from "iconv-lite";
-import { getLocalRule } from "../models/config";
+import { getConfig } from "../models/config";
 
 export const app = express();
 app.use((req, res, next) => {
@@ -37,8 +37,7 @@ function parseUrlEncodedShiftJIS(encoded: string): string {
 
 app.get("/", (req, res) => {
   // chmate reads board title from here
-  // todo: make board title configurable
-  const body = "<html><head><title>Steady BBS</title></head></html>";
+  const body = `<html><head><title>${getConfig().boardName}</title></head></html>`;
   const buffer = iconv.encode(body, 'shift_jis');
   res.set("Content-Type", "text/html; charset=shift_jis");
   res.send(buffer);
@@ -50,7 +49,7 @@ app.get("/SETTING.TXT", (req, res) => {
 })
 
 app.get("/head.txt", (req, res) => {
-  const buffer = iconv.encode(getLocalRule(), 'shift_jis');
+  const buffer = iconv.encode(getConfig().localRule, 'shift_jis');
   res.set("Content-Type", "text/plain; charset=shift_jis");
   res.send(buffer);
 })

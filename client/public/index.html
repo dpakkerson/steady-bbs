@@ -6,11 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="preload" href="/api/config" as="fetch" crossorigin="anonymous">
     <link rel="preload" href="/api/threads" as="fetch" crossorigin="anonymous">
-    <title>%REACT_APP_BBS_NAME%</title>
     <script>
       appConfig = {
-        bbsName: '%REACT_APP_BBS_NAME%',
         publicUrl: '%PUBLIC_URL%',
       }
     </script>

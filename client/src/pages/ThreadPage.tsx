@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useThread } from "../api/useAPI";
 import { NewResponseForm } from "../components/NewResponseForm";
@@ -21,6 +21,10 @@ function ThreadPage() {
   const { threadId: threadIdString, responseQuery } = useParams();
   const threadId = parseInt(threadIdString as string, 10);
   const { thread } = useThread(threadId);
+
+  useEffect(() => {
+    document.title = thread?.title ?? 'Loading Thread Title...';
+  });
 
   return (
     <div className="p-3 thread-page">

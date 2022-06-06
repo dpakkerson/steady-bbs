@@ -1,25 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from '../logo.svg';
 import './TopPage.css';
 import { NewResponseForm } from '../components/NewResponseForm';
 import ThreadList from '../components/ThreadList';
-import { useLocalRule, useThreads } from '../api/useAPI';
+import { useBBSConfig, useThreads } from '../api/useAPI';
 import ThreadResponses from '../components/ThreadResponses';
 import ThreadTitle from '../components/ThreadTitle';
 
 function TopPage() {
   const {threads} = useThreads();
-  const {localRule} = useLocalRule();
-  
+  const {config} = useBBSConfig();
+
+  useEffect(() => {
+    document.title = config?.boardName ?? 'Steady BBS'
+  });
+
   return (
     <div className="toppage">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Welcome to {appConfig.bbsName}
+          Welcome to {config?.boardName}
         </p>
       </header>
-      <div className='toppage-component p-3' dangerouslySetInnerHTML={{__html: localRule ?? ''}} />
+      <div className='toppage-component p-3' dangerouslySetInnerHTML={{__html: config?.localRule ?? ''}} />
       <div className='toppage-component p-3'>
         <ThreadList />
       </div>
